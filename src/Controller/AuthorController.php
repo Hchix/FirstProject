@@ -90,6 +90,29 @@ class AuthorController extends AbstractController
         return $this->render('author/statAuthorAdd.html.twig',['author' =>$author]);
     }
 
+    #[Route("/suppr/{id}", name:"suppr")]
+    public function supprAuteur(AuthorRepository $authorepository,$id): Response
+    {
+        $author = $authorepository->find($id);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($author);
+        $em->flush();
+        return $this->redirectToRoute('list_author');
+    }
+    #[Route("/edit/{id}", name:"edit")]
+    public function UpdateAuthor ($id,Request $request,AuthorRepository $authorepository){
+        $author = $authorepository->find($id);
+        $form = $this->createForm(AuthorformType::class,$author);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('list_author');
+        }
+        return $this->render('author/formupdate.html.twig', ['formM' => $form->createView()]);
+    }
+
     #[Route("/form", name:"formAuteur")]
     public function AddAuthor (Request $request){
         $author =new Author();
