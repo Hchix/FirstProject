@@ -17,7 +17,7 @@ class ServiceController extends AbstractController
     }
     #[Route('/showService/{name}',name:'showService')]
     public function showService($name){
-        return  $this->render( 'service/showService.html.twig',['param1'=>$name]);
+        return  $this->render( 'service/showService.html.twig',['param'=>$name]);
     } 
     #[Route('/goToIndex', name: 'app_index')]
     public function goToIndex(){
